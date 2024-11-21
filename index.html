@@ -16,6 +16,7 @@
         const createScene = function () {
             const scene = new BABYLON.Scene(engine);
 
+            // Definicja kamery ArcRotateCamera
             const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
             camera.attachControl(canvas, true);
 
