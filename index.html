@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Babylon.js GLB Model</title>
+    <title>Babylon.js GLB Model with Camera Controls</title>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.js"></script>
 </head>
@@ -16,14 +16,30 @@
         const createScene = function () {
             const scene = new BABYLON.Scene(engine);
 
-            // Definicja kamery ArcRotateCamera
-            const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
+            // Definicja kamery ArcRotateCamera dla obrotu, przesuwania i przybliżania/oddalania
+            const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 2, 10, new BABYLON.Vector3(0, 0, 0), scene);
             camera.attachControl(canvas, true);
+
+            // Dodanie różnych perspektyw
+            const perspectiveCameras = [];
+            perspectiveCameras.push(camera);
+            perspectiveCameras.push(new BABYLON.FreeCamera("freeCamera", new BABYLON.Vector3(0, 5, -10), scene));
+            perspectiveCameras.push(new BABYLON.FollowCamera("followCamera", new BABYLON.Vector3(0, 5, -10), scene));
+
+            // Funkcja do przełączania perspektyw
+            let currentCameraIndex = 0;
+            window.addEventListener("keydown", (event) => {
+                if (event.key === "c") {
+                    currentCameraIndex = (currentCameraIndex + 1) % perspectiveCameras.length;
+                    scene.activeCamera = perspectiveCameras[currentCameraIndex];
+                    perspectiveCameras[currentCameraIndex].attachControl(canvas, true);
+                }
+            });
 
             const light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
 
             // Ładowanie modelu GLB z odpowiednią obsługą błędów
-            BABYLON.SceneLoader.Append("./", "model.glb", scene, function (scene) {
+            BABYLON.SceneLoader.Append("./", "model.glb", scene, function () {
                 console.log("Model GLB załadowany pomyślnie!");
                 scene.createDefaultCameraOrLight(true, true, true);
                 scene.createDefaultEnvironment();
@@ -46,3 +62,4 @@
     </script>
 </body>
 </html>
+
