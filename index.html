@@ -16,25 +16,15 @@
         const createScene = function () {
             const scene = new BABYLON.Scene(engine);
 
-            // Definicja kamery ArcRotateCamera dla obrotu, przesuwania i przybliżania/oddalania
-            const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 2, 10, new BABYLON.Vector3(0, 0, 0), scene);
+            // Definicja kamery ArcRotateCamera z ograniczeniami
+            const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 4, 10, new BABYLON.Vector3(0, 0, 0), scene);
             camera.attachControl(canvas, true);
 
-            // Dodanie różnych perspektyw
-            const perspectiveCameras = [];
-            perspectiveCameras.push(camera);
-            perspectiveCameras.push(new BABYLON.FreeCamera("freeCamera", new BABYLON.Vector3(0, 5, -10), scene));
-            perspectiveCameras.push(new BABYLON.FollowCamera("followCamera", new BABYLON.Vector3(0, 5, -10), scene));
+            // Ograniczenia kamery
+            camera.lowerBetaLimit = 0; // Uniemożliwienie obracania poniżej płaszczyzny X
+            camera.upperBetaLimit = Math.PI / 2; // Ograniczenie do półkola
 
-            // Funkcja do przełączania perspektyw
-            let currentCameraIndex = 0;
-            window.addEventListener("keydown", (event) => {
-                if (event.key === "c") {
-                    currentCameraIndex = (currentCameraIndex + 1) % perspectiveCameras.length;
-                    scene.activeCamera = perspectiveCameras[currentCameraIndex];
-                    perspectiveCameras[currentCameraIndex].attachControl(canvas, true);
-                }
-            });
+            // Inne kamery i perspektywy mogą być dodane w razie potrzeby
 
             const light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
 
@@ -62,4 +52,3 @@
     </script>
 </body>
 </html>
-
