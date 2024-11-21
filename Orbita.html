@@ -21,7 +21,7 @@
 
             const light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
 
-            BABYLON.SceneLoader.Append("./", "model.glb", scene, function (scene) {
+            BABYLON.SceneLoader.Append("./", "model.glb", scene, function () {
                 console.log("Model GLB załadowany pomyślnie!");
                 scene.createDefaultCameraOrLight(true, true, true);
                 scene.createDefaultEnvironment();
