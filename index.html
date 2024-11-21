@@ -21,11 +21,13 @@
 
             const light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
 
+            // Ładowanie modelu GLB z odpowiednią obsługą błędów
             BABYLON.SceneLoader.Append("./", "model.glb", scene, function (scene) {
+                console.log("Model GLB załadowany pomyślnie!");
                 scene.createDefaultCameraOrLight(true, true, true);
                 scene.createDefaultEnvironment();
             }, null, function (scene, message) {
-                console.error(message);
+                console.error("Błąd ładowania modelu: " + message);
             });
 
             return scene;
@@ -43,4 +45,3 @@
     </script>
 </body>
 </html>
-
